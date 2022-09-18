@@ -1,5 +1,6 @@
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
+import uuid from 'react-uuid';
 
 export default function CustomForm({addTask}) {
   const [task, setTask] = useState("");
@@ -9,7 +10,7 @@ export default function CustomForm({addTask}) {
     addTask({
         name:task,
         checked: false,
-        id: Date.now
+        id: uuid()
     })
     setTask("");
   };
