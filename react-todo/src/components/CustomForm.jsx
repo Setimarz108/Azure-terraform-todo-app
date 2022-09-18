@@ -9,7 +9,7 @@ export default function CustomForm({addTask}) {
     addTask({
         name:task,
         checked: false,
-        id: Date.now()
+        id: Date.now
     })
     setTask("");
   };

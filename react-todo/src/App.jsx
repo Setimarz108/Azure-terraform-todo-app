@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import CustomForm from './components/CustomForm'
+import TaskList from './components/TaskList'
 
 function App() {
   const [tasks,setTasks] = useState([])
@@ -15,6 +16,7 @@ function App() {
         <h1> My tasks</h1>
       </header>
       <CustomForm addTask={addTask}/>
+      {tasks &&  <TaskList tasks={tasks}/>}
     </div>
   )
 }
