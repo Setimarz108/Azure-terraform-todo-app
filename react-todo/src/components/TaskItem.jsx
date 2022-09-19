@@ -1,13 +1,20 @@
 import styles from './TaskItem.module.css'
 import {CheckIcon} from '@heroicons/react/24/outline'
+import {PencilIcon} from '@heroicons/react/24/outline'
+import {TrashIcon} from '@heroicons/react/24/outline'
 import { useState } from 'react'
+import { useEffect } from 'react'
 
-const TaskItem = ({task}) => {
+const TaskItem = ({task,deleteTask, toggleTask}) => {
     const [isChecked, setIsChecked ] = useState(task.checked);
 
   const handleCheckboxChange = (e) =>{
     setIsChecked(!isChecked);
+    toggleTask(task.id)
+        
   }
+ 
+ 
 
   return (
     <li className={styles.task}>
@@ -30,6 +37,26 @@ const TaskItem = ({task}) => {
                     height={24}/>
                 </p>
             </label>
+        </div>
+        <div className={styles["task-group"]}>
+           <button 
+           className="btn"
+           aria-label={`Update${task.name} Task`}
+           >
+            <PencilIcon width={24} height={24}/>
+           </button>
+
+           <button 
+           className={`btn ${styles.delete}`}
+           aria-label={`Delete${task.name} Task`}
+           onClick={() => deleteTask(task.id)}
+           >
+            <TrashIcon 
+            width={24} 
+            height={24}
+           
+            />
+           </button>
         </div>
     </li>
   )
