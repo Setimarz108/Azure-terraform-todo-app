@@ -3,9 +3,10 @@ import "./App.css";
 import CustomForm from "./components/CustomForm";
 import EditForm from "./components/EditForm";
 import TaskList from "./components/TaskList";
+import useLocalStorage from './Hooks/useLocalStorage'
 
 function App() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useLocalStorage('myTasks',[]);
   const [editedTasks, setEditedTasks] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [previousFocus, setPreviousFocus] = useState(null);
