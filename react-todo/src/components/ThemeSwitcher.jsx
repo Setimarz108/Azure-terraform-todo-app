@@ -7,13 +7,33 @@ import {
   SwatchIcon,
 } from "@heroicons/react/24/outline";
 
+import { useEffect } from "react";
+import useLocalStorage from "../Hooks/useLocalStorage";
+
 function ThemeSwitcher() {
   const [isColorPicking, setIsColorPicking] = useState(false);
-  const [theme, setTheme] = useState("light");
-  const [hue, setHue] = useState("240");
+
+  const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+  const [theme, setTheme] = useLocalStorage("todo.theme", defaultDark ? "dark" : "light");
+  const [hue, setHue] = useLocalStorage("todo.color", "240");
+
+  useEffect(() => {
+    document.documentElement.setAttribute('color-scheme', theme)
+  },[theme])
+
+  useEffect(() => {
+    document.documentElement.style.setProperty('--_hue', hue)
+  },[hue])
 
   return (
-    <aside className={styles.wrapper}>
+    <aside 
+    className={styles.wrapper}
+    style={{
+      backgroundColor: isColorPicking 
+      ? 'hsl(var(--muted) / .6)'
+      : 'transparent'
+    }}
+    >
       {isColorPicking ? (
         <>
           <button
