@@ -1,0 +1,164 @@
+name: 🚀 Deploy Enterprise Todo App to Azure
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  NODE_VERSION: '18'
+  TERRAFORM_VERSION: '1.5.0'
+
+jobs:
+  validate-infrastructure:
+    name: 🔍 Validate Infrastructure
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+    
+    - name: 🔧 Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ env.TERRAFORM_VERSION }}
+    
+    - name: 📝 Terraform Format Check
+      run: terraform fmt -check
+      continue-on-error: true
+      
+    - name: 🔨 Terraform Init
+      run: terraform init
+      
+    - name: ✅ Terraform Validate
+      run: terraform validate
+      
+    - name: 📋 Terraform Plan
+      run: terraform plan -var-file="terraform.tfvars.example"
+      continue-on-error: true
+
+  build-application:
+    name: 🏗️ Build React Application
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+    
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: react-todo/package-lock.json
+    
+    - name: 📦 Install Dependencies
+      working-directory: ./react-todo
+      run: npm ci
+    
+    - name: 🧪 Run Tests (if available)
+      working-directory: ./react-todo
+      run: npm test -- --coverage --watchAll=false
+      continue-on-error: true
+    
+    - name: 🏗️ Build Application
+      working-directory: ./react-todo
+      run: npm run build
+    
+    - name: 📤 Upload Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: react-build-${{ github.sha }}
+        path: react-todo/dist/
+        retention-days: 30
+
+  security-scan:
+    name: 🔒 Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+    
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    
+    - name: 📦 Install Dependencies
+      working-directory: ./react-todo
+      run: npm ci
+    
+    - name: 🔍 Run Security Audit
+      working-directory: ./react-todo
+      run: npm audit --audit-level moderate
+      continue-on-error: true
+
+  deploy-infrastructure:
+    name: 🌩️ Deploy Infrastructure
+    runs-on: ubuntu-latest
+    needs: [validate-infrastructure, build-application]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+    
+    - name: 🔧 Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ env.TERRAFORM_VERSION }}
+        terraform_wrapper: false
+    
+    # For now, just validate - we'll add deployment secrets later
+    - name: 🔨 Terraform Init
+      run: terraform init
+      
+    - name: 📋 Terraform Plan
+      run: terraform plan -var-file="terraform.tfvars.example"
+      
+    - name: 💬 Comment Plan on PR
+      if: github.event_name == 'pull_request'
+      run: echo "Terraform plan completed successfully"
+
+  deploy-application:
+    name: 🚀 Deploy Application
+    runs-on: ubuntu-latest
+    needs: [deploy-infrastructure, build-application]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: 📥 Download Build Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: react-build-${{ github.sha }}
+        path: ./build
+    
+    - name: 📋 List Build Contents
+      run: ls -la ./build
+      
+    # For now, just show what would be deployed
+    - name: ✅ Deployment Ready
+      run: echo "Application build artifacts ready for deployment"
+
+  notification:
+    name: 📢 Notify Status
+    runs-on: ubuntu-latest
+    needs: [validate-infrastructure, build-application, security-scan]
+    if: always()
+    
+    steps:
+    - name: 🎉 Success Notification
+      if: ${{ needs.validate-infrastructure.result == 'success' && needs.build-application.result == 'success' }}
+      run: |
+        echo "✅ Pipeline completed successfully!"
+        echo "📊 Infrastructure validated"
+        echo "🏗️ Application built"
+        echo "🔒 Security scan completed"
+        
+    - name: ❌ Failure Notification
+      if: ${{ needs.validate-infrastructure.result == 'failure' || needs.build-application.result == 'failure' }}
+      run: |
+        echo "❌ Pipeline failed!"
+        echo "Please check the logs above"

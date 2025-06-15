@@ -1,0 +1,13 @@
+environment    = "demo"
+location      = "northeurope"
+budget_amount = 5
+alert_email   = "Sebastian.Marquez.co@outlook.com"
+project_name  = "TodoApp"
+
+tags = {
+  Project     = "TodoApp"
+  Owner       = "SebastianMarquez"
+  Environment = "Demo"
+  CostCenter  = "Development"
+  Team        = "CloudEngineering"
+}
