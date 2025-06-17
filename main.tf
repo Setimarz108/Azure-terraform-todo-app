@@ -17,7 +17,7 @@ provider "azurerm" {
       prevent_deletion_if_contains_resources = false
     }
   }
-  
+
 }
 
 data "azurerm_client_config" "current" {}
@@ -71,8 +71,8 @@ resource "azurerm_key_vault" "kv" {
   soft_delete_retention_days = 7
   purge_protection_enabled   = false
 
-   # Enable RBAC authorization
-  enable_rbac_authorization   = true 
+  # Enable RBAC authorization
+  enable_rbac_authorization = true
 
   network_acls {
     default_action = "Allow"
@@ -142,15 +142,15 @@ resource "azurerm_windows_web_app" "app" {
   }
 
   app_settings = {
-   "WEBSITE_RUN_FROM_PACKAGE"               = "1",
-  "ENVIRONMENT"                            = var.environment,
-  "APPINSIGHTS_INSTRUMENTATIONKEY"         = azurerm_application_insights.ai.instrumentation_key,
-  "APPLICATIONINSIGHTS_CONNECTION_STRING"  = azurerm_application_insights.ai.connection_string,
-  "ApplicationInsightsAgent_EXTENSION_VERSION" = "~3",
-  "WEBSITES_ENABLE_APP_SERVICE_STORAGE"    = "false",
-  "WEBSITE_DYNAMIC_CACHE"                  = "0",
-  "WEBSITE_LOCAL_CACHE_OPTION"             = "Always",
-  "WEBSITE_LOCAL_CACHE_SIZEINMB"           = "300"
+    "WEBSITE_RUN_FROM_PACKAGE"                   = "1",
+    "ENVIRONMENT"                                = var.environment,
+    "APPINSIGHTS_INSTRUMENTATIONKEY"             = azurerm_application_insights.ai.instrumentation_key,
+    "APPLICATIONINSIGHTS_CONNECTION_STRING"      = azurerm_application_insights.ai.connection_string,
+    "ApplicationInsightsAgent_EXTENSION_VERSION" = "~3",
+    "WEBSITES_ENABLE_APP_SERVICE_STORAGE"        = "false",
+    "WEBSITE_DYNAMIC_CACHE"                      = "0",
+    "WEBSITE_LOCAL_CACHE_OPTION"                 = "Always",
+    "WEBSITE_LOCAL_CACHE_SIZEINMB"               = "300"
   }
 
   tags = local.common_tags
@@ -162,7 +162,7 @@ resource "azurerm_role_assignment" "app_service_kv_reader" {
   role_definition_name = "Key Vault Secrets User"
   principal_id         = azurerm_windows_web_app.app.identity[0].principal_id
 
-  
+
 }
 
 # CDN
