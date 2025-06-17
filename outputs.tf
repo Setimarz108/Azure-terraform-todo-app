@@ -38,12 +38,42 @@ output "budget_url" {
 output "deployment_summary" {
   description = "Summary of deployed resources"
   value = {
-    environment     = var.environment
+    environment    = var.environment
     location       = var.location
     resource_count = 7
     estimated_cost = "€0.00/month (F1 Free Tier)"
     monitoring     = "Application Insights Enabled"
     cost_controls  = "Budget Alerts Active"
     alerting       = "Action Groups Configured"
+  }
+}
+
+/*output "cdn_endpoint_url" {
+  description = "CDN endpoint URL for global performance"
+  value       = "https://${azurerm_cdn_endpoint.cdn_endpoint.fqdn}"
+}*/
+
+output "key_vault_name" {
+  description = "Name of the Key Vault"
+  value       = azurerm_key_vault.kv.name
+}
+
+output "key_vault_uri" {
+  description = "URI of the Key Vault"
+  value       = azurerm_key_vault.kv.vault_uri
+}
+
+output "app_service_managed_identity" {
+  description = "App Service Managed Identity Principal ID"
+  value       = azurerm_windows_web_app.app.identity[0].principal_id
+}
+
+output "security_summary" {
+  description = "Security features implemented"
+  value = {
+    key_vault_enabled    = "Secrets stored securely"
+    managed_identity     = "System-assigned identity configured"
+    rbac_configured      = "Role-based access control active"
+    zero_secrets_in_code = "No credentials in configuration"
   }
 }
