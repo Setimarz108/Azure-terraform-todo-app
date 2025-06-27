@@ -12,6 +12,7 @@ A production-ready React Todo application deployed on Azure with enterprise-grad
 ## 🏗️ Architecture Overview
 
 This project demonstrates professional cloud engineering practices with:
+
 - **8 integrated Azure services** working seamlessly together
 - **Infrastructure as Code** with Terraform (180+ lines)
 - **Enterprise security** with Azure Key Vault and RBAC
