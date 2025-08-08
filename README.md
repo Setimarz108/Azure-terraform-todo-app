@@ -1,239 +1,214 @@
-
 [![Azure](https://img.shields.io/badge/Azure-Cloud-0078D4?logo=microsoft-azure)](https://azure.microsoft.com)
 [![Terraform](https://img.shields.io/badge/Terraform-IaC-7B42BC?logo=terraform)](https://www.terraform.io/)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)](https://reactjs.org/)
 [![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?logo=github-actions)](https://github.com/features/actions)
 
-A production-ready React Todo application deployed on Azure with enterprise-grade infrastructure, automated CI/CD, and comprehensive monitoring - all optimized to run at €0/month.
+# 📝 Azure Production-Ready Todo App
+
+A **React Todo application** deployed on **Azure** with **enterprise-grade infrastructure**, **automated CI/CD**, and **comprehensive monitoring** — optimized to run at **€0/month**.
 
 🔗 **Live Demo**: [https://todoapp-demo-spnypd75.azurewebsites.net](https://todoapp-demo-spnypd75.azurewebsites.net)
 
-## 🏗️ Architecture Overview
+---
 
-This project demonstrates professional cloud engineering practices with:
-
+## 🏗 Architecture Highlights
 - **8 integrated Azure services** working seamlessly together
 - **Infrastructure as Code** with Terraform (180+ lines)
-- **Enterprise security** with Azure Key Vault and RBAC
+- **Enterprise security** with Azure Key Vault + RBAC
 - **Automated CI/CD** pipeline with quality gates
-- **Complete observability** with Application Insights
+- **Complete observability** via Application Insights
 - **Cost optimization** achieving €0/month hosting
 
-## ✨ Features
+---
+
+## ✨ Key Features
 
 ### Application
-- ✅ Responsive React frontend with modern UI
-- ✅ Full CRUD operations for todo items
-- ✅ HTTPS enforcement
-- ✅ Professional error handling
+✅ Responsive React frontend  
+✅ Full CRUD operations  
+✅ HTTPS enforcement  
+✅ Professional error handling  
 
 ### Infrastructure
-- ✅ Azure App Service (Windows, F1 Free tier)
-- ✅ Azure Key Vault for secrets management
-- ✅ Managed Identity for passwordless authentication
-- ✅ Application Insights for monitoring
-- ✅ Log Analytics Workspace for data retention
-- ✅ Budget alerts and cost management
-- ✅ Resource tagging for governance
+✅ Azure App Service (F1 Free tier)  
+✅ Azure Key Vault for secrets  
+✅ Managed Identity (passwordless auth)  
+✅ Application Insights + Log Analytics  
+✅ Budget alerts & cost management  
+✅ Resource tagging for governance  
 
 ### DevOps
-- ✅ GitHub Actions CI/CD pipeline
-- ✅ Terraform validation and formatting checks
-- ✅ Automated security scanning
-- ✅ Multi-environment support (dev/staging/prod)
+✅ GitHub Actions CI/CD  
+✅ Terraform validation & format checks  
+✅ Automated security scans  
+✅ Multi-environment support (dev/staging/prod)  
 
-## 🚀 Quick Start
+---
 
-### Prerequisites
+<details>
+<summary>🚀 Quick Start (click to expand)</summary>
+
+### **Prerequisites**
 - Azure subscription
 - Terraform >= 1.5.0
 - Node.js >= 18
 - Azure CLI
 
-### Local Development
-
-1. Clone the repository:
+### **Local Development**
 ```bash
+# Clone repo
 git clone https://github.com/Setimarz108/Todo-App.git
 cd Todo-App
 
-Install React dependencies:
-
-bashcd react-todo
+# Install React dependencies
+cd react-todo
 npm install
 npm start
+```
+App runs at: **http://localhost:3000**
 
-The app will be available at http://localhost:3000
+### **Deploy Infrastructure**
+```bash
+az login
+terraform init
+terraform plan
+terraform apply
+terraform output application_url
+```
+</details>
 
-Infrastructure Deployment
+---
 
-Login to Azure:
+<details>
+<summary>📁 Project Structure</summary>
 
-bashaz login
-
-Initialize Terraform:
-
-bashterraform init
-
-Review the deployment plan:
-
-bashterraform plan
-
-Deploy the infrastructure:
-
-bashterraform apply
-
-Get the application URL:
-
-bashterraform output application_url
-📁 Project Structure
+```
 .
-├── .github/
-│   └── workflows/
-│       └── azure-deploy.yml      # CI/CD pipeline
-├── react-todo/                   # React application
-│   ├── public/
-│   ├── src/
-│   └── package.json
-├── main.tf                       # Main Terraform configuration
-├── variables.tf                  # Input variables
-├── outputs.tf                    # Output definitions
-├── terraform.tfvars             # Variable values
+├── .github/workflows/azure-deploy.yml   # CI/CD pipeline
+├── react-todo/                          # React frontend
+├── main.tf                               # Terraform config
+├── variables.tf                          # Variables
+├── outputs.tf                            # Outputs
+├── terraform.tfvars                      # Values
 └── README.md
-🔧 Configuration
-Terraform Variables
-VariableDescriptionDefaultproject_nameProject identifierTodoAppenvironmentDeployment environmentdemolocationAzure regionWest Europe
-Resource Naming Convention
-All resources follow the pattern: {type}-{project}-{environment}-{uniqueid}
-Example: app-TodoApp-demo-spnypd75
-📊 Monitoring & Alerts
-The application includes comprehensive monitoring:
+```
+</details>
 
-Performance Monitoring: Response times, request rates, failures
-Custom Alerts:
+---
 
-Response time > 5 seconds
-Availability < 99%
-Budget threshold reached (80% and 100%)
+<details>
+<summary>📊 Monitoring & Alerts</summary>
 
+- **Performance Monitoring:** Response times, request rates, failures  
+- **Custom Alerts:** Response > 5s, Availability < 99%, Budget > 80%/100%  
+- **Live Metrics:** Real-time monitoring  
+- **Application Map:** Dependency tracking
+</details>
 
-Live Metrics: Real-time application performance
-Application Map: Dependency tracking and failure analysis
+---
 
-💰 Cost Optimization
-Achieved €0/month through:
+<details>
+<summary>💰 Cost Optimization</summary>
 
-F1 Free App Service tier
-Minimal Key Vault transactions
-Application Insights sampling
-Smart use of free tiers
+- F1 Free App Service tier  
+- Minimal Key Vault transactions  
+- Application Insights sampling  
+- Free tier resource usage  
+- Budget alerts (80% and 100% thresholds) with email notifications
+</details>
 
-Budget alerts ensure no unexpected charges:
+---
 
-Warning at 80% of €5 budget
-Critical alert at 100%
-Email notifications configured
+<details>
+<summary>🔐 Security</summary>
 
-🔐 Security
+- Zero secrets in code (Key Vault)  
+- Managed Identity (passwordless)  
+- RBAC (least privilege)  
+- HTTPS-only enforcement  
+- Security headers at App Service level
+</details>
 
-Zero secrets in code: All sensitive data in Key Vault
-Managed Identity: Passwordless authentication
-RBAC: Least privilege access control
-HTTPS only: Automatic redirect enforcement
-Security headers: Configured at App Service level
+---
 
-🛠️ CI/CD Pipeline
-The GitHub Actions workflow includes:
+<details>
+<summary>🛠 CI/CD Pipeline</summary>
 
-Infrastructure Validation
+- **Infrastructure validation:** Terraform fmt, validate, config checks  
+- **App build:** React production build + dependency install  
+- **Security:** Vulnerability scanning  
+- **Quality gates:** All checks must pass before deploy; rollback on failure
+</details>
 
-Terraform format check
-Terraform validate
-Configuration analysis
+---
 
+<details>
+<summary>🏷 Resource Tagging</summary>
 
-Application Build
-
-Dependency installation
-React production build
-Security vulnerability scanning
-
-
-Quality Gates
-
-All checks must pass
-Automated rollback on failure
-
-
-
-🏷️ Resource Tagging Strategy
-All resources are tagged for governance:
-hclProject     = "TodoApp"
+```hcl
+Project     = "TodoApp"
 Environment = "demo"
 ManagedBy   = "Terraform"
 Owner       = "Sebastian"
 CostCenter  = "Development"
-📈 Future Enhancements
+```
+</details>
 
- Backend API with Azure Functions
- Azure SQL Database integration
- Azure Redis Cache for performance
- Container deployment with AKS
- Multi-region deployment
- Azure Front Door for global distribution
+---
 
-🧪 Testing
-bash# Run React tests
+<details>
+<summary>📈 Future Enhancements</summary>
+
+- Backend API with Azure Functions  
+- Azure SQL Database integration  
+- Azure Redis Cache  
+- Container deployment with AKS  
+- Multi-region deployment  
+- Azure Front Door for global distribution
+</details>
+
+---
+
+<details>
+<summary>🧪 Testing</summary>
+
+```bash
+# React tests
 cd react-todo
 npm test
 
 # Validate Terraform
 terraform validate
 
-# Check formatting
+# Formatting check
 terraform fmt -check
-🚨 Troubleshooting
-Common Issues
+```
+</details>
 
-Deployment fails with subscription error
+---
 
-Ensure you're logged into Azure CLI: az login
-Check subscription: az account show
+<details>
+<summary>🚨 Troubleshooting</summary>
 
+**Deployment fails with subscription error**  
+- `az login` and check subscription with `az account show`
 
-Terraform state issues
+**Terraform state issues**  
+- `terraform init -reconfigure`
 
-Run terraform init -reconfigure
+**App not accessible**  
+- Check App Service in Azure Portal  
+- Verify GitHub Actions deploy status
+</details>
 
+---
 
-Application not accessible
+## 👨‍💻 Author
+**Sebastian Marquez**  
+GitHub: [@Setimarz108](https://github.com/Setimarz108)  
+Built for **Skaylink Cloud Engineer** position  
 
-Check App Service is running in Azure Portal
-Verify deployment completed in GitHub Actions
+---
 
-
-
-🤝 Contributing
-
-Fork the repository
-Create your feature branch (git checkout -b feature/AmazingFeature)
-Commit your changes (git commit -m 'Add some AmazingFeature')
-Push to the branch (git push origin feature/AmazingFeature)
-Open a Pull Request
-
-📝 License
-This project is licensed under the MIT License.
-👨‍💻 Author
-Sebastian Marquez
-
-GitHub: @Setimarz108
-Project: Built for Skaylink Cloud Engineer position
-
-🙏 Acknowledgments
-
-Azure documentation for best practices
-Terraform Azure Provider examples
-React community for the excellent create-react-app
-
-
-Built with ❤️ using Azure, Terraform, and React
+**License:** MIT  
+Built with ❤️ using **Azure**, **Terraform**, and **React**
